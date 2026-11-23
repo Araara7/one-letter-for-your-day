@@ -32,6 +32,12 @@ def main() -> None:
     # Exactly one byte: newline="" so no trailing newline is added.
     with open(os.path.join(out_dir, "entry.txt"), "w", encoding="utf-8", newline="") as f:
         f.write(LETTER)
+    # Verify the written artifact: the gate refuses anything but exactly
+    # one character, so read it back and fail loudly rather than submit
+    # a bad file.
+    with open(os.path.join(out_dir, "entry.txt"), "r", encoding="utf-8", newline="") as f:
+        written = f.read()
+    assert written == LETTER and len(written) == 1, "entry.txt must hold exactly one letter"
 
 
 if __name__ == "__main__":
